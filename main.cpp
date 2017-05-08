@@ -6,7 +6,7 @@
 #include<vector>
 #include<algorithm>
 using namespace std;
-string getKey(map<string, int>&m,int value);
+string getKey(map<string, int>&m, int value);
 string getKey(map<string, int>&m, int value) {
 	map<string, int>::iterator it = m.begin();
 	for (;it != m.end();++it) {
@@ -48,33 +48,40 @@ int main() {
 	sort(value.begin(), value.end());
 	for (int i = 0;i < 10;i++) {
 		int n = value[value.size() - i - 1];
-		cout << "suffix:"<<getKey(freq,n)<<"\t";
-		cout << n<<endl;
+		cout << "suffix:" << getKey(freq, n) << "\t";
+		cout << n << endl;
 	}
-
+	string text = "abcdefghijking";
+	cout << text.substr(text.size() - 3);
 	cout << "what suffix do you want enter:";
 	string SUFFIX;
 	cin >> SUFFIX;
-	int count=0;
-	map<string, int>length;
+	int count = 0;
+	map<int, set<string>>length;
 	for (string word : lexicon) {
 		if (word.size() < SUFFIX.size()) {
 			continue;
 		}
 		else {
 			string suffix = word.substr(word.size() - SUFFIX.size());
-			if (suffix == SUFFIX)
+			if (suffix == SUFFIX) {
 				count++;
-			length[word] = word.size();
+				length[word.size()].insert(word);
+			}
 		}
 	}
-	cout << count<<endl;
+	cout << count << endl;
 	vector<int>len;
-	map<string, int>::iterator IT = length.begin();
+	map<int, set<string>>::iterator IT = length.begin();
 	for (;IT != length.end();++IT) {
-		len.push_back(IT->second);
+		len.push_back(IT->first);
 	}
 	sort(len.begin(), len.end());
+	for (int i = len[len.size() - 1];i > 0;i--) {
+		for (string word : length[i]) {
+			cout << word <<endl;
+		}
+	}
 	infile.close();
 	system("pause");
 	return 0;
